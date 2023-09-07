@@ -1,0 +1,7 @@
+{
+  "extends": "@lough/tsconfig/typescript",
+  "compilerOptions": {
+    "lib": ["ESNext", "DOM"]
+  },
+  "include": ["src"]
+}
