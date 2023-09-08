@@ -1,0 +1,43 @@
+{
+  "name": "@logically/bom-local",
+  "version": "0.1.0",
+  "description": "Logically browser local.",
+  "keywords": [
+    "typescript",
+    "logically",
+    "browser",
+    "local"
+  ],
+  "author": {
+    "name": "City",
+    "email": "city@nanzc.com"
+  },
+  "homepage": "https://github.com/logically-city/bom/tree/main/packages/local#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/logically-city/bom.git"
+  },
+  "files": [
+    "dist",
+    "lib",
+    "es"
+  ],
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "types": "es/index.d.ts",
+  "unpkg": "dist/index.min.js",
+  "scripts": {
+    "prepublishOnly": "npm run test && npm run build",
+    "build": "lough-build",
+    "dev": "lough-build dev",
+    "test": "jest"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@lough/build-cli": "^0.2.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

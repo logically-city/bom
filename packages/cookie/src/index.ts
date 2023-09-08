@@ -37,7 +37,7 @@ export class Cookie {
    * @param name 名称
    * @returns 获取到的值
    */
-  static get(name: string) {
+  static get(name: string): string {
     const nameEQ = `${name}=`;
     const ca = document.cookie.split(';');
 
@@ -45,6 +45,7 @@ export class Cookie {
       const c = ca[i].trim();
       if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length);
     }
+
     return '';
   }
 
@@ -57,7 +58,7 @@ export class Cookie {
   }
 
   /**
-   * 全局配置
+   * 全局默认配置
    */
   static globalDefaultConfig: ICookieConfig = {
     prefix: '',
@@ -78,36 +79,36 @@ export class Cookie {
   /**
    * 前缀名称
    */
-  _name: string;
+  prefixedName: string;
 
   constructor(name: string, private defaultValue = '', config: ICookieConfig = {}) {
     const { prefix, ..._config } = { ...Cookie.globalDefaultConfig, ...config };
     this.options = _config;
 
     this.name = name;
-    this._name = computePrefix(name, prefix);
+    this.prefixedName = computePrefix(name, prefix);
   }
 
   /**
    * 获取
    * @returns 获取到的值
    */
-  get() {
-    return Cookie.get(this._name) || this.defaultValue;
+  get(): string {
+    return Cookie.get(this.prefixedName) || this.defaultValue;
   }
 
   /**
    * 设置
    * @param value 值
    */
-  set(value: string) {
-    Cookie.set(this._name, value, this.options);
+  set(value: string): void {
+    return Cookie.set(this.prefixedName, value, this.options);
   }
 
   /**
    * 删除
    */
-  remove() {
-    Cookie.remove(this._name);
+  remove(): void {
+    return Cookie.remove(this.prefixedName);
   }
 }
