@@ -4,12 +4,12 @@ import { computePrefix } from './utils';
 export class Cookie {
   /**
    * 设置
-   * @param name 名称
+   * @param key 键
    * @param value 值
    * @param options 选项
    */
-  static set(name: string, value: string, options: ICookieOptions = {}): void {
-    let cookieString = `${name}=${value}`;
+  static set(key: string, value: string, options: ICookieOptions = {}): void {
+    let cookieString = `${key}=${value}`;
 
     if (options.expire) {
       const date = new Date();
@@ -34,11 +34,11 @@ export class Cookie {
 
   /**
    * 获取
-   * @param name 名称
+   * @param key 键
    * @returns 获取到的值
    */
-  static get(name: string): string {
-    const nameEQ = `${name}=`;
+  static get(key: string): string {
+    const nameEQ = `${key}=`;
     const ca = document.cookie.split(';');
 
     for (let i = 0; i < ca.length; i++) {
@@ -51,10 +51,10 @@ export class Cookie {
 
   /**
    * 删除
-   * @param name 名称
+   * @param key 键
    */
-  static remove(name: string): void {
-    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  static remove(key: string): void {
+    document.cookie = `${key}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
   }
 
   /**
@@ -72,21 +72,21 @@ export class Cookie {
   private options: ICookieOptions;
 
   /**
-   * 名称
+   * 键
    */
-  name: string;
+  key: string;
 
   /**
-   * 前缀名称
+   * 前缀键
    */
-  prefixedName: string;
+  prefixedKey: string;
 
-  constructor(name: string, private defaultValue = '', config: ICookieConfig = {}) {
+  constructor(key: string, private defaultValue = '', config: ICookieConfig = {}) {
     const { prefix, ..._config } = { ...Cookie.globalDefaultConfig, ...config };
     this.options = _config;
 
-    this.name = name;
-    this.prefixedName = computePrefix(name, prefix);
+    this.key = key;
+    this.prefixedKey = computePrefix(key, prefix);
   }
 
   /**
@@ -94,7 +94,7 @@ export class Cookie {
    * @returns 获取到的值
    */
   get(): string {
-    return Cookie.get(this.prefixedName) || this.defaultValue;
+    return Cookie.get(this.prefixedKey) || this.defaultValue;
   }
 
   /**
@@ -102,13 +102,13 @@ export class Cookie {
    * @param value 值
    */
   set(value: string): void {
-    return Cookie.set(this.prefixedName, value, this.options);
+    return Cookie.set(this.prefixedKey, value, this.options);
   }
 
   /**
    * 删除
    */
   remove(): void {
-    return Cookie.remove(this.prefixedName);
+    return Cookie.remove(this.prefixedKey);
   }
 }

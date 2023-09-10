@@ -1,18 +1,18 @@
 {
-  "name": "@logically/bom-cookie",
+  "name": "@logically/bom-session",
   "version": "0.0.0",
-  "description": "Logically browser cookie.",
+  "description": "Logically browser session.",
   "keywords": [
     "typescript",
     "logically",
     "browser",
-    "cookie"
+    "session"
   ],
   "author": {
     "name": "City",
     "email": "city@nanzc.com"
   },
-  "homepage": "https://github.com/logically-city/bom/tree/main/packages/cookie#readme",
+  "homepage": "https://github.com/logically-city/bom/tree/main/packages/session#readme",
   "repository": {
     "type": "git",
     "url": "https://github.com/logically-city/bom.git"

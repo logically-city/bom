@@ -12,30 +12,30 @@ export class LocalStorage<T> {
 
   /**
    * 设置
-   * @param name 名称
+   * @param key 键
    * @param value 值
    * @param options 选项
    */
-  static set<T>(name: string, value: T, options: ILocalStorageBaseOptions = {}): void {
+  static set<T>(key: string, value: T, options: ILocalStorageBaseOptions = {}): void {
     if (!LocalStorage.ensureLocalStorage()) return;
 
     const data: ILocalStorageData<T> = { value: value };
     if (options.expire !== undefined) data.expire = Date.now() + options.expire;
     if (options.version !== undefined) data.version = options.version;
 
-    return window.localStorage.setItem(name, JSON.stringify(data));
+    return window.localStorage.setItem(key, JSON.stringify(data));
   }
 
   /**
    * 获取
-   * @param name 名称
+   * @param key 键
    * @param options 选项
    * @returns 获取到的值
    */
-  static get<T = any>(name: string, options: Omit<ILocalStorageOptions<T>, 'expire'> = {}): T | undefined {
+  static get<T = any>(key: string, options: Omit<ILocalStorageOptions<T>, 'expire'> = {}): T | undefined {
     if (!LocalStorage.ensureLocalStorage()) return undefined;
 
-    const storedData = window.localStorage.getItem(name);
+    const storedData = window.localStorage.getItem(key);
     if (!storedData) return undefined;
 
     let data: ILocalStorageData<T> = JSON.parse(storedData);
@@ -44,14 +44,14 @@ export class LocalStorage<T> {
         const _data = options.onExpired(data);
         if (_data !== undefined) {
           data = { ...data, ..._data };
-          LocalStorage.set(name, data.value, data);
+          LocalStorage.set(key, data.value, data);
           return data.value;
         } else {
-          LocalStorage.remove(name);
+          LocalStorage.remove(key);
           return undefined;
         }
       } else {
-        LocalStorage.remove(name);
+        LocalStorage.remove(key);
         return undefined;
       }
     }
@@ -61,14 +61,14 @@ export class LocalStorage<T> {
         const _data = options.onVersionMismatch(data, options.version);
         if (_data !== undefined) {
           data = { ...data, ..._data };
-          LocalStorage.set(name, data.value, data);
+          LocalStorage.set(key, data.value, data);
           return data.value;
         } else {
-          LocalStorage.remove(name);
+          LocalStorage.remove(key);
           return undefined;
         }
       } else {
-        LocalStorage.remove(name);
+        LocalStorage.remove(key);
         return undefined;
       }
     }
@@ -78,11 +78,11 @@ export class LocalStorage<T> {
 
   /**
    * 删除
-   * @param name
+   * @param key 键
    */
-  static remove(name: string): void {
+  static remove(key: string): void {
     if (!LocalStorage.ensureLocalStorage()) return;
-    return window.localStorage.removeItem(name);
+    return window.localStorage.removeItem(key);
   }
 
   /**
@@ -114,21 +114,21 @@ export class LocalStorage<T> {
   private options: ILocalStorageOptions<T>;
 
   /**
-   * 名称
+   * 键
    */
-  name: string;
+  key: string;
 
   /**
-   * 前缀名称
+   * 前缀键
    */
-  prefixedName: string;
+  prefixedKey: string;
 
-  constructor(name: string, private defaultValue: T | undefined = undefined, config: ILocalStorageOptions<T> = {}) {
+  constructor(key: string, private defaultValue: T | undefined = undefined, config: ILocalStorageOptions<T> = {}) {
     const { prefix, ..._config } = { ...LocalStorage.globalDefaultConfig, ...config };
     this.options = _config;
 
-    this.name = name;
-    this.prefixedName = computePrefix(name, prefix);
+    this.key = key;
+    this.prefixedKey = computePrefix(key, prefix);
   }
 
   /**
@@ -136,7 +136,7 @@ export class LocalStorage<T> {
    * @returns 获取到的值
    */
   get(): T | undefined {
-    const data = LocalStorage.get<T>(this.prefixedName, this.options);
+    const data = LocalStorage.get<T>(this.prefixedKey, this.options);
     return data !== undefined ? data : this.defaultValue;
   }
 
@@ -145,13 +145,13 @@ export class LocalStorage<T> {
    * @param value 值
    */
   set(value: T): void {
-    return LocalStorage.set(this.prefixedName, value, this.options);
+    return LocalStorage.set(this.prefixedKey, value, this.options);
   }
 
   /**
    * 删除
    */
   remove(): void {
-    return LocalStorage.remove(this.prefixedName);
+    return LocalStorage.remove(this.prefixedKey);
   }
 }
