@@ -1,6 +1,6 @@
 {
   "name": "@logically/bom-session",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Logically browser session.",
   "keywords": [
     "typescript",
@@ -32,7 +32,6 @@
     "dev": "lough-build dev",
     "test": "jest"
   },
-  "dependencies": {},
   "devDependencies": {
     "@lough/build-cli": "^0.2.0"
   },
